@@ -11,8 +11,9 @@ import (
 
 // EditProfileRequest - modifies profile
 func EditProfileRequest(w http.ResponseWriter, r *http.Request) {
-	var accountID string
+	w.Header().Set("Content-Type", "application/json")
 
+	var accountID string
 	if accountID = r.Header.Get("account-id"); accountID == "" {
 		http.Error(w, "Account ID not provided in header", http.StatusBadRequest)
 		return

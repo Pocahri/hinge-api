@@ -9,6 +9,8 @@ import (
 
 // GetAcctLikesRequest retrives slice of incoming likes
 func GetAcctLikesRequest(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
 	var acctID string
 	if acctID = r.Header.Get("account-id"); acctID == "" {
 		http.Error(w, "Account ID not provided in header", http.StatusBadRequest)
