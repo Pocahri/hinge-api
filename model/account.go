@@ -7,7 +7,7 @@ type Account struct {
 	Email           string    `json:"email"`
 	PhoneNumber     string    `json:"phoneNumber"`
 	Recommendations []Account `json:"recommendations"`
-	LikesYou        []Account `json:"likesYou"`
+	IncomingLikes   []Account `json:"incomingLikes"`
 	YourLikes       []Account `json:"yourLikes"`
 	Matches         []Account `json:"matches"`
 }
@@ -36,7 +36,7 @@ func (a *Account) AddMatches() {
 		m[accounts.AccountID]++
 	}
 
-	for _, accounts := range a.LikesYou {
+	for _, accounts := range a.IncomingLikes {
 		if _, ok := m[accounts.AccountID]; ok {
 			a.Matches = append(a.Matches, accounts)
 		}
