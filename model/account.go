@@ -3,7 +3,7 @@ package model
 // Account struct
 type Account struct {
 	AccountID       string    `json:"accountID"`
-	Profile         Profile   `json:"profile"`
+	Profile         *Profile  `json:"profile"`
 	Email           string    `json:"email"`
 	PhoneNumber     string    `json:"phoneNumber"`
 	Recommendations []Account `json:"recommendations"`
