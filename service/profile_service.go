@@ -1,20 +1,22 @@
 package service
 
 import (
-	"github.com/Pocahri/hinge-api/model"
+	"strings"
+
+	"github.com/Pocahri/hinge-api/data"
 	"github.com/pkg/errors"
 )
 
 // EditProfile assigns new value to the specified profile field
-func EditProfile(acctID string, m map[string]string, acctList map[string]*model.Account) error {
-	if val, ok := acctList[acctID]; ok {
+func EditProfile(acctID string, m map[string]string) error {
+	if val, ok := data.Accounts[acctID]; ok {
 		p := val.Profile
 
 		for key, val := range m {
-			switch key {
-			case "firstName":
+			switch strings.ToLower(key) {
+			case "firstname":
 				p.FirstName = val
-			case "lastName":
+			case "lastname":
 				p.LastName = val
 			case "picture":
 				p.Picture = val
@@ -30,8 +32,9 @@ func EditProfile(acctID string, m map[string]string, acctList map[string]*model.
 				return errors.New("Invalid profile field")
 			}
 		}
-
+	} else {
+		return errors.New("Profile does not exist")
 	}
 
-	return errors.New("Profile does not exist")
+	return nil
 }

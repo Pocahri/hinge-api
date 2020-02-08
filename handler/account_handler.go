@@ -1,24 +1,25 @@
 package handler
 
 import (
+	"encoding/json"
 	"net/http"
 
-	"github.com/Pocahri/model"
-	"github.com/pkg/errors"
+	"github.com/Pocahri/hinge-api/data"
 )
 
-func getAcctLikesRequest(r *http.Request, acctList map[string]*model.Account) ([]model.Account, error) {
+// GetAcctLikesRequest retrives slice of incoming likes
+func GetAcctLikesRequest(w http.ResponseWriter, r *http.Request) {
 	var acctID string
 	if acctID = r.Header.Get("account-id"); acctID == "" {
-		return nil, errors.New("Account ID not provided in header")
+		http.Error(w, "Account ID not provided in header", http.StatusBadRequest)
+		return
 	}
 
-	var a model.Account
-	if val, ok := acctList[acctID]; ok {
-		a = val.Account
-	} else {
-		return nil, errors.New("Must provide an existing account ID")
+	if val, ok := data.Accounts[acctID]; ok {
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(val.IncomingLikes)
+		return
 	}
 
-	return a.IncomingLikes
+	http.Error(w, "Must provide an existing account ID", http.StatusBadRequest)
 }

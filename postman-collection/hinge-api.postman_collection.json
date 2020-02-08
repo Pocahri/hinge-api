@@ -1,0 +1,82 @@
+{
+	"info": {
+		"_postman_id": "19b19f98-9a77-4dd2-8854-16fa26ab986b",
+		"name": "hinge-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Incoming Likes",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "account-id",
+						"value": "4552138",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8080/incoming-likes?=&=",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"incoming-likes"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": ""
+						},
+						{
+							"key": "",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Profile",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "account-id",
+						"value": "7785640",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Company\": \"some company name\",\n\t\"Description\": \"I am cool\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/edit-profile",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"edit-profile"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

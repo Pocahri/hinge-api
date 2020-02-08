@@ -5,16 +5,17 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/Pocahri/hinge-api/model"
+	"github.com/Pocahri/hinge-api/data"
 	"github.com/Pocahri/hinge-api/service"
-	"github.com/pkg/errors"
 )
 
-func getEditProfileRequest(r *http.Request) (string, map[string]string, error) {
+// EditProfileRequest - modifies profile
+func EditProfileRequest(w http.ResponseWriter, r *http.Request) {
 	var accountID string
 
 	if accountID = r.Header.Get("account-id"); accountID == "" {
-		return "", nil, errors.New("Account ID not provided in header")
+		http.Error(w, "Account ID not provided in header", http.StatusBadRequest)
+		return
 	}
 
 	var pRequestBody map[string]string
@@ -23,24 +24,18 @@ func getEditProfileRequest(r *http.Request) (string, map[string]string, error) {
 		marshalErr := json.Unmarshal(bodyBytes, &pRequestBody)
 
 		if marshalErr != nil {
-			return "", nil, errors.New("Error reading body")
+			http.Error(w, "Error reading body", http.StatusNotFound)
+			return
 		}
 	}
 
-	return accountID, pRequestBody, nil
-}
-
-// ModifyProfile calls getEditProfileRequest & EditProfile
-func ModifyProfile(r *http.Request, acctList map[string]*model.Account) error {
-	ID, m, errRequest := getEditProfileRequest(r)
-	if errRequest != nil {
-		return errRequest
+	editErr := service.EditProfile(accountID, pRequestBody)
+	if editErr != nil {
+		http.Error(w, editErr.Error(), http.StatusNotFound)
+		return
 	}
 
-	errEdit := service.EditProfile(ID, m, acctList)
-	if errEdit != nil {
-		return errEdit
-	}
-
-	return nil
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(data.Accounts[accountID].Profile)
+	return
 }
